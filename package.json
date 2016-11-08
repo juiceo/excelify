@@ -1,0 +1,21 @@
+{
+  "name": "junction-scripts",
+  "version": "1.0.0",
+  "description": "Scripts to parse junction data into a sensible form.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Juuso Lappalainen",
+  "license": "ISC",
+  "dependencies": {
+    "babyparse": "^0.4.6",
+    "colors": "^1.1.2",
+    "csvtojson": "^1.0.3",
+    "fs": "0.0.1-security",
+    "json2xls": "^0.1.2",
+    "lodash": "^4.16.6",
+    "papaparse": "^4.1.2",
+    "xmlhttprequest": "^1.8.0"
+  }
+}

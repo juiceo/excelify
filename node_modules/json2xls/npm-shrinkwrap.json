@@ -1,0 +1,32 @@
+{
+  "name": "json2xls",
+  "version": "0.1.0",
+  "dependencies": {
+    "excel-export": {
+      "version": "0.3.11",
+      "from": "excel-export@>=0.3.11 <0.4.0",
+      "resolved": "https://registry.npmjs.org/excel-export/-/excel-export-0.3.11.tgz",
+      "dependencies": {
+        "node-zip": {
+          "version": "1.1.1",
+          "from": "node-zip@>=1.0.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/node-zip/-/node-zip-1.1.1.tgz",
+          "dependencies": {
+            "jszip": {
+              "version": "2.5.0",
+              "from": "jszip@2.5.0",
+              "resolved": "https://registry.npmjs.org/jszip/-/jszip-2.5.0.tgz",
+              "dependencies": {
+                "pako": {
+                  "version": "0.2.8",
+                  "from": "pako@>=0.2.5 <0.3.0",
+                  "resolved": "https://registry.npmjs.org/pako/-/pako-0.2.8.tgz"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
