@@ -15,6 +15,14 @@ To test if it works, run the script against the test.csv file provided:
 
 `node excelify.js test.csv`
 
+# Usage
+
+To run this against your own .csv file, just paste the file into the excelify folder, and run the command: 
+
+`node excelify.js your_file_name.csv`
+
+If the script completed succesfully, your results will be available in the *results* directory.
+
 # Configuration 
 To make this script work against your particular set of submission data, the following configuration options are available: 
 
