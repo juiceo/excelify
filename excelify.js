@@ -12,16 +12,35 @@ var _ = require('lodash');
 
 
 /* Configuration */
+var fs = require('fs');
+var obj = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+var gavel_fields = obj.gavel_fields;
+var prize_category = obj.prize_category_field;
+
 var file_path = process.argv[2];
 
 if (file_path == undefined) {
 	console.log(colors.red("\nYou must define a path to a .csv file to parse!"));
 	console.log("For example: node excelify.js " + colors.yellow("test.csv\n"));
 	return;
+} else {
+	console.log(colors.green.underline("\nReading config:"))
+	console.log(" -> File path: " + colors.yellow(file_path));
 }
 
-var gavel_fields = ['Submission Title', 'File Url', 'Plain Description'];
-var prize_category = ['Select A Route (Only 1) To Be Considered For Route Prize'];
+if (gavel_fields == undefined | gavel_fields == '') {
+	console.log(colors.red("\nPlease define what fields you need for Gavel in config.json"));
+	return;
+} else {
+	console.log(" -> Gavel fields: " + colors.yellow(gavel_fields));
+}
+
+if (prize_category == undefined) {
+	console.log(colors.red("\nPlease define what field contains data for prize categories in your .csv"));
+	return;
+} else {
+	console.log(" -> Prize category field: " + colors.yellow(prize_category));
+}
 
 /* Parse file and hand the Json result to a handler function */
 converter.on("end_parsed", function (jsonArray) {

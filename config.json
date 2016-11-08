@@ -1,0 +1,4 @@
+{ 
+	"gavel_fields": ["Submission Title", "File Url", "Plain Description"],
+	"prize_category_field": "Select A Route (Only 1) To Be Considered For Route Prize"
+}
