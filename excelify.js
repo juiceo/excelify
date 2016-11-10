@@ -14,7 +14,9 @@ var _ = require('lodash');
 /* Configuration */
 var fs = require('fs');
 var obj = JSON.parse(fs.readFileSync('config.json', 'utf8'));
-var gavel_fields = obj.gavel_fields;
+var gavel_title = obj.gavel_title;
+var gavel_location = obj.gavel_location;
+var gavel_description = obj.gavel_description;
 var prize_category = obj.prize_category_field;
 
 var file_path = process.argv[2];
@@ -26,20 +28,6 @@ if (file_path == undefined) {
 } else {
 	console.log(colors.green.underline("\nReading config:"))
 	console.log(" -> File path: " + colors.yellow(file_path));
-}
-
-if (gavel_fields == undefined | gavel_fields == '') {
-	console.log(colors.red("\nPlease define what fields you need for Gavel in config.json"));
-	return;
-} else {
-	console.log(" -> Gavel fields: " + colors.yellow(gavel_fields));
-}
-
-if (prize_category == undefined) {
-	console.log(colors.red("\nPlease define what field contains data for prize categories in your .csv"));
-	return;
-} else {
-	console.log(" -> Prize category field: " + colors.yellow(prize_category));
 }
 
 /* Parse file and hand the Json result to a handler function */
@@ -100,19 +88,27 @@ function createGavelSubmissionData(json) {
 	var logger = fs.createWriteStream('./results/gavel_submissions.txt');
 
 	for(var i = 0; i < json.length; i++) {
+		console.log("Writing item " + i);
 		var obj = json[i];
-		var row = "";
-		for (var j = 0; j < gavel_fields.length; j++) {
-			var str = obj[gavel_fields[j]];
-			str = escapeLineBreaks(str);
-			str = escapeDoubleQuotes(str);
-			str = escapeCommas(str);
-			row += str;
-			if (j < gavel_fields.length - 1) {
-				row += ',';
+
+		var title = obj[gavel_title];
+		title = escapeAllTheThings(title);
+
+		var location = obj[gavel_location];
+		location = escapeAllTheThings(location);
+
+		var description = "";
+		for (var j = 0; j < gavel_description.length; j++) {
+			var field = gavel_description[j];
+			var item = obj[field];
+			if (item != undefined) {
+				item = escapeAllTheThings(obj[field]);
 			}
+			var result = "<b>" + field + "</b>: <br/>" + item + "<br/><br/>";
+			description += result;
 		}
-		logger.write(row + "\n");
+
+		logger.write(title + "," + location + "," + description + "\n");
 	}
 
 	logger.end();
@@ -157,6 +153,13 @@ function createPrizeCategoryLists(json) {
 		logWriteComplete(".xlsx for " + cat + " with " + colors.green(catList.length) + " rows", step_date); 
 	}
 
+}
+
+function escapeAllTheThings(str) {
+	str = escapeLineBreaks(str);
+	str = escapeDoubleQuotes(str);
+	str = escapeCommas(str);
+	return str;
 }
  
 /* Replace all double quotes in a string with the corresponding HTML character code */

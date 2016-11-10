@@ -1,4 +1,6 @@
 { 
-	"gavel_fields": ["Submission Title", "File Url", "Plain Description"],
+	"gavel_title": "Submission Title",
+	"gavel_location": "Submission Url",
+	"gavel_description": ["Primary Track", "Secondary Track", "Plain Description"],
 	"prize_category_field": "Select A Route (Only 1) To Be Considered For Route Prize"
 }
