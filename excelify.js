@@ -100,11 +100,8 @@ function createGavelSubmissionData(json) {
 		var description = "";
 		for (var j = 0; j < gavel_description.length; j++) {
 			var field = gavel_description[j];
-			var item = obj[field];
-			if (item != undefined) {
-				item = escapeAllTheThings(obj[field]);
-			}
-			var result = "<b>" + field + "</b>: <br/>" + item + "<br/><br/>";
+			var value = escapeAllTheThings(obj[field]);
+			var result = "<b>" + field + "</b>: <br/>" + value + "<br/><br/>";
 			description += result;
 		}
 
@@ -156,6 +153,10 @@ function createPrizeCategoryLists(json) {
 }
 
 function escapeAllTheThings(str) {
+	if (str == undefined) {
+		return str;
+	}
+
 	str = escapeLineBreaks(str);
 	str = escapeDoubleQuotes(str);
 	str = escapeCommas(str);
