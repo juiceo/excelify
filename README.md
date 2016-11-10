@@ -30,7 +30,5 @@ in config.json:
 
 - gavel_title: The name of the field that represents the title of the submission in your .csv file
 - gavel_location: The name of the field that represents the table location of the submission in your .csv file
-- gavel_description: A list of fields that you want the gavel description of the project to consist of. For example, if you set this to ["Primary Track", "Description"], the resulting description would be printed as:
-  Primary Track: [Primary Track]
-  Description: [Description]
+- gavel_description: A list of fields that you want the gavel description of the project to consist of, e.g. ["Primary Track", "Secondary Track", "Description"]
 - prize_category_field: The name of the field in your data that contains what prize categories a team has registered for, e.g. 'Prize Category'
