@@ -28,5 +28,7 @@ To make this script work against your particular set of submission data, the fol
 
 in config.json: 
 
-- gavel_fields: An array of fields that you would like to include in the gavel export, e.g. ['Team Name', 'Location', 'Description']
+- gavel_title: The name of the field that represents the title of the submission in your .csv file
+- gavel_location: The name of the field that represents the table location of the submission in your .csv file
+- gavel_description: A list of fields that you want the gavel description of the project to consist of, e.g. ["Primary Track", "Secondary Track", "Description"]
 - prize_category_field: The name of the field in your data that contains what prize categories a team has registered for, e.g. 'Prize Category'
