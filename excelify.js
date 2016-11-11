@@ -18,6 +18,8 @@ var gavel_title = obj.gavel_title;
 var gavel_location = obj.gavel_location;
 var gavel_description = obj.gavel_description;
 var prize_category = obj.prize_category_field;
+var excel_fields = obj.excel_fields;
+var excel_sort_by = obj.excel_sort_by;
 
 var file_path = process.argv[2];
 
@@ -134,12 +136,22 @@ function createPrizeCategoryLists(json) {
 	/* Filter the json by prize category and create .xlsx files for each one */
 	for (var i = 0; i < categories.length; i++) {
 		step_date = new Date();
-		var cat = categories[i];
+
+		/* Filter the dataset for only the current category */
+		var cat = escapeAllTheThings(categories[i]);
 		var catList = _.filter(json, function(o) {
 			return (o[prize_category].indexOf(cat) > -1)
 		});
 
-		var xls = json2xls(catList);
+		catList = _.sortBy(catList, function(o) {
+			return (o[excel_sort_by]);	
+		})
+
+		var options = {
+			fields: excel_fields
+		}
+
+		var xls = json2xls(catList, options);
 		cat = cat.replace("/", "-");
 		cat = cat.replace(/ /g,'_');
 		if (cat == "") {
