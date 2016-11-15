@@ -36,7 +36,7 @@ function parseSubmissionData(path_to_submissions) {
 	step_date = new Date();
 
 	/* Check if the path to the submission file is defined */
-	if (path_to_submissions == undefined) {
+	if (path_to_submissions == undefined || path_to_submissions == "") {
 		console.log(colors.red("\nYou must define a path to a Devpost export file (.csv)!"));
 		console.log("In config.json, edit the path_to_submissions parameter to the path of your Devpost export file\n-> For example: " + colors.yellow("path_to_submission: ./data/submissions.csv\n\n"));
 		return false;
@@ -73,7 +73,7 @@ function parseJudgeData(path_to_judges) {
 	step_date = new Date();
 
 	/* Check if the path to the judges file is defined */
-	if (path_to_judges == undefined) {
+	if (path_to_judges == undefined || path_to_judges == "") {
 		console.log(colors.red("\nYou must define a path to judge list to parse (.csv)!"));
 		console.log("In config.json, edit the path_to_judges parameter to the path of your judge list (.csv) \n-> For example: " + colors.yellow("path_to_judges: ./data/judges.csv\n\n"));
 		return false;
