@@ -265,7 +265,17 @@ function logWriteComplete(name, step_date) {
 
 function logAllComplete() {
 	console.log(colors.green.underline("\n\nWriting files complete!"));
+	if (submissionsParsed) {
+		console.log(colors.green("-> Success parsing submission data!"));
+	} else {
+		console.log(colors.red("-> Failed to parse submission data, please check that you have set the correct file path in config.json"));
+	}
+
+	if (judgesParsed) {
+		console.log(colors.green("-> Success parsing judge data!"));
+	} else {
+		console.log(colors.red("-> Failed to parse judge data, please check that you have set the correct file path in config.json\n"));
+	}
 	console.log("-> Total time elapsed: " + (new Date() - start_date) + " ms");
-	console.log("Submissions: " + submissionsParsed + ", judges: " + judgesParsed);
 	console.log("-> Results can be found in /results\n\n\n");
 }
