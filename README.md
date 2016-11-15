@@ -7,17 +7,17 @@ Running this script against a Devpost export file (.csv) will yield:
 - 0-n .xlsx files, one for each prize category featured in the list of submissions. These .xlsx files will contain the full submission data of all teams that registered for a given prize category. If a team has registered for more than one category, they will be present in more than one .xlsx file respectively
 
 # Setup & Usage
-Paste this into a terminal prompt
+1. Move your Devpost export file and judge data into the **data** folder
+2. Edit the config.json file according to your needs (instructions below)
+3. Install the script by pasting the following into a command prompt (e.g. terminal on Mac OS X)
 
 `git clone git@github.com:lappalj4/excelify.git && cd excelify && npm install`
 
-Edit the config.json file according to your needs (instructions below)
-
-To run the script with your own input files, just run the command:
+4. Run the script by typing the following command:
 
 `node excelify`
 
-If the script completed succesfully, your results will be available in the **results** directory.
+5. If the script completed succesfully, your results will be available in the **results** directory.
 
 # Configuration 
 
