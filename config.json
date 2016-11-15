@@ -1,8 +1,13 @@
 { 
+	"path_to_submissions": "data/test.csv",
+	"path_to_judges": "data/judges.csv",
 	"gavel_title": "Submission Title",
 	"gavel_location": "Table",
 	"gavel_description": ["Primary Track", "Secondary Track", "Plain Description"],
 	"prize_category_field": "Desired Prizes",
 	"excel_fields": ["Submission Title", "Table", "Primary Track", "Secondary Track"],
-	"excel_sort_by": "Table"
+	"excel_sort_by": "Table",
+	"judge_csv_name": "Name",
+	"judge_csv_email": "Email",
+	"judge_csv_description": "Phone number"
 }

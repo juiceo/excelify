@@ -1,7 +1,4 @@
 var Converter = require("csvtojson").Converter;
-var converter = new Converter({
-	flatKeys: true
-});
 var colors = require('colors');
 var start_date = new Date();
 var step_date = new Date();
@@ -13,41 +10,99 @@ var _ = require('lodash');
 
 /* Configuration */
 var fs = require('fs');
-var obj = JSON.parse(fs.readFileSync('config.json', 'utf8'));
-var gavel_title = obj.gavel_title;
-var gavel_location = obj.gavel_location;
-var gavel_description = obj.gavel_description;
-var prize_category = obj.prize_category_field;
-var excel_fields = obj.excel_fields;
-var excel_sort_by = obj.excel_sort_by;
+var conf = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+var gavel_title = conf.gavel_title;
+var gavel_location = conf.gavel_location;
+var gavel_description = conf.gavel_description;
+var prize_category = conf.prize_category_field;
+var excel_fields = conf.excel_fields;
+var excel_sort_by = conf.excel_sort_by;
+var judge_csv_name = conf.judge_csv_name;
+var judge_csv_email = conf.judge_csv_email;
+var judge_csv_description = conf.judge_csv_description;
+var path_to_submissions = conf.path_to_submissions;
+var path_to_judges = conf.path_to_judges;
 
-var file_path = process.argv[2];
+/* Run everything */
+var submissionsParsed = parseSubmissionData(path_to_submissions);
+var judgesParsed = parseJudgeData(path_to_judges);
 
-if (file_path == undefined) {
-	console.log(colors.red("\nYou must define a path to a .csv file to parse!"));
-	console.log("For example: node excelify.js " + colors.yellow("test.csv\n"));
-	return;
-} else {
-	console.log(colors.green.underline("\nReading config:"))
-	console.log(" -> File path: " + colors.yellow(file_path));
+setTimeout(function() {
+	logAllComplete();
+}, 500);
+
+function parseSubmissionData(path_to_submissions) {
+
+	step_date = new Date();
+
+	/* Check if the path to the submission file is defined */
+	if (path_to_submissions == undefined) {
+		console.log(colors.red("\nYou must define a path to a Devpost export file (.csv)!"));
+		console.log("In config.json, edit the path_to_submissions parameter to the path of your Devpost export file\n-> For example: " + colors.yellow("path_to_submission: ./data/submissions.csv\n\n"));
+		return false;
+	}
+	
+	console.log(colors.green.underline("\nReading submission data:"));
+	console.log(" -> File path: " + colors.yellow(path_to_submissions));
+
+	var converter = new Converter({
+		flatKeys: true
+	});
+
+	/* If the path is defined, parse the file and hand the result to the handler function */
+	converter.on("end_parsed", function (jsonArray) {
+
+	   var elapsed = new Date() - step_date;
+	   console.log("\nParsing done!".underline.green);
+	   console.log("-> Took " + elapsed + " milliseconds.");
+
+	   console.log("\nSubmissions summary:".underline.green);
+	   checkDataValidity(jsonArray);
+	   
+	   console.log("\n" + colors.green.underline("Writing submission result files:"));
+	   createGavelSubmissionData(jsonArray);
+	   createPrizeCategoryLists(jsonArray);
+	});
+
+	fs.createReadStream(path_to_submissions).pipe(converter);
+	return true;
 }
 
-/* Parse file and hand the Json result to a handler function */
-converter.on("end_parsed", function (jsonArray) {
+function parseJudgeData(path_to_judges) {
 
-   var elapsed = new Date() - start_date;
-   console.log("\nParsing done!".underline.green);
-   console.log("-> Took " + elapsed + " milliseconds.");
+	step_date = new Date();
 
-   checkValidity(jsonArray);
-   handleResult(jsonArray);
-});
+	/* Check if the path to the judges file is defined */
+	if (path_to_judges == undefined) {
+		console.log(colors.red("\nYou must define a path to judge list to parse (.csv)!"));
+		console.log("In config.json, edit the path_to_judges parameter to the path of your judge list (.csv) \n-> For example: " + colors.yellow("path_to_judges: ./data/judges.csv\n\n"));
+		return false;
+	}
+	
+	console.log(colors.green.underline("\nReading judge data:"));
+	console.log(" -> File path: " + colors.yellow(path_to_judges));
 
-require("fs").createReadStream(file_path).pipe(converter);
+	var converter = new Converter({
+		flatKeys: true
+	});
 
-/* Check the validity of data and print a summary */
-function checkValidity(json) {
-	console.log("\nResult summary:".underline.green);
+	converter.on("end_parsed", function (jsonArray) {
+
+	   var elapsed = new Date() - step_date;
+	   console.log("\nParsing done!".underline.green);
+	   console.log("-> Took " + elapsed + " milliseconds.");
+
+	   console.log("\Judges summary:".underline.green);
+	   checkDataValidity(jsonArray);
+	   createJudgeCsv(jsonArray);
+	});
+
+	fs.createReadStream(path_to_judges).pipe(converter);
+	return true;
+}
+
+/* Check the validity of the given data and print a summary */
+function checkDataValidity(json) {
 	console.log("-> Total items: %s", colors.green(json.length));
 
 	var keyset = Object.keys(json[0]);
@@ -73,24 +128,12 @@ function checkValidity(json) {
 	}
 }
 
-
-/* Handle result of parsing and (over)write result files */
-function handleResult(json) {
-	console.log("\n" + colors.green.underline("Writing result files:"));
-
-	createGavelSubmissionData(json);
-	createPrizeCategoryLists(json);
-
-	logAllComplete();
-}
-
 /* Create gavel_submissions.txt for pasting into Gavel */
 function createGavelSubmissionData(json) {
 	step_date = new Date();
 	var logger = fs.createWriteStream('./results/gavel_submissions.txt');
 
 	for(var i = 0; i < json.length; i++) {
-		console.log("Writing item " + i);
 		var obj = json[i];
 
 		var title = obj[gavel_title];
@@ -112,6 +155,29 @@ function createGavelSubmissionData(json) {
 
 	logger.end();
 	logWriteComplete("gavel_submissions.txt", step_date);
+}
+
+function createJudgeCsv(json) {
+	step_date = new Date();
+	var logger = fs.createWriteStream('./results/gavel_judges.txt');
+
+	for(var i = 0; i < json.length; i++) {
+		var obj = json[i];
+
+		var name = obj[judge_csv_name];
+		name = escapeAllTheThings(name);
+
+		var email = obj[judge_csv_email];
+		email = escapeAllTheThings(email);
+
+		var description = obj[judge_csv_description];
+		description = escapeAllTheThings(description);
+
+		logger.write(name + "," + email + "," + description + "\n");
+	}
+
+	logger.end();
+	logWriteComplete("gavel_judges.txt", step_date);
 }
 
 /* Filter the data by prize categories */
@@ -154,6 +220,7 @@ function createPrizeCategoryLists(json) {
 		var xls = json2xls(catList, options);
 		cat = cat.replace("/", "-");
 		cat = cat.replace(/ /g,'_');
+		cat = cat.toLowerCase();
 		if (cat == "") {
 			cat = "no_category";
 		}
@@ -169,6 +236,7 @@ function escapeAllTheThings(str) {
 		return str;
 	}
 
+	str = String(str);
 	str = escapeLineBreaks(str);
 	str = escapeDoubleQuotes(str);
 	str = escapeCommas(str);
@@ -198,5 +266,6 @@ function logWriteComplete(name, step_date) {
 function logAllComplete() {
 	console.log(colors.green.underline("\n\nWriting files complete!"));
 	console.log("-> Total time elapsed: " + (new Date() - start_date) + " ms");
+	console.log("Submissions: " + submissionsParsed + ", judges: " + judgesParsed);
 	console.log("-> Results can be found in /results\n\n\n");
 }
