@@ -13,11 +13,11 @@ Running this script against a Devpost export file (.csv) will yield:
 
 `git clone git@github.com:lappalj4/excelify.git && cd excelify && npm install`
 
-4. Run the script by typing the following command:
+Run the script by typing the following command:
 
 `node excelify`
 
-5. If the script completed succesfully, your results will be available in the **results** directory.
+If the script completed succesfully, your results will be available in the **results** directory.
 
 # Configuration 
 
