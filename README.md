@@ -9,12 +9,12 @@ Running this script against a Devpost export file (.csv) will yield:
 Also, provided with a .csv file containing judge information, this script can create a .txt file that you can also copy-paste directly into Gavel (see configuration).
 
 # Setup & Usage
-1. Install 
+- Install 
 
 `git clone git@github.com:lappalj4/excelify.git && cd excelify && npm install`
 
-2. Move your Devpost export file and judge data into the **data** folder
-3. Edit the config.json file according to your needs (instructions below)
+- Move your Devpost export file and judge data into the **data** folder
+- Edit the config.json file according to your needs (instructions below)
 
 Run the script by typing the following command:
 
