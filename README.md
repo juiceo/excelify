@@ -1,17 +1,20 @@
 # excelify
-A node.js script to create .txt and .xlsx files from Devpost export data for Junction 2016
+A node.js script to create .txt and .xlsx files from Devpost export data, created for Junction 2016. The purpose of this script is to simplify and automate the process of moving data from Devpost to Gavel, so that no one needs to manually do this stuff at the event on game day.
 
 Running this script against a Devpost export file (.csv) will yield: 
 
 - 1 .txt file containing all of the submissions in a format that you can paste directly into Gavel
 - 0-n .xlsx files, one for each prize category featured in the list of submissions. These .xlsx files will contain the full submission data of all teams that registered for a given prize category. If a team has registered for more than one category, they will be present in more than one .xlsx file respectively
 
+Also, provided with a .csv file containing judge information, this script can create a .txt file that you can also copy-paste directly into Gavel (see configuration).
+
 # Setup & Usage
-1. Move your Devpost export file and judge data into the **data** folder
-2. Edit the config.json file according to your needs (instructions below)
-3. Install the script by pasting the following into a command prompt (e.g. terminal on Mac OS X)
+1. Install 
 
 `git clone git@github.com:lappalj4/excelify.git && cd excelify && npm install`
+
+2. Move your Devpost export file and judge data into the **data** folder
+3. Edit the config.json file according to your needs (instructions below)
 
 Run the script by typing the following command:
 
