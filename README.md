@@ -37,7 +37,7 @@ To make this script work against your particular set of submission data, the fol
 - gavel_location: The name of the field that represents the table location of the submission in your .csv file
 - gavel_description: A **list** of fields that you want the gavel description of the project to consist of
 - prize_category_field: The name of the field in your data that contains what prize categories a team has registered for
-- excel_fields: A **list** of the fields to include in the prize category excels
+- excel_fields: A **list** of the fields to include in the prize category excels. Each field will be a column in the resulting .xlsx file
 - excel_sort_by: The name of the field by which to sort the above excels
 - judge_csv_name: The field in your judge data that contains the name of the judge
 - judge_csv_email: The field in your judge data that contains the email address of the judge
