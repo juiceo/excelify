@@ -20,7 +20,7 @@ Run the script by typing the following command:
 
 `node excelify`
 
-If the script completed succesfully, your results will be available in the **results** directory.
+If the script completed successfully, your results will be available in the **results** directory.
 
 # Configuration 
 
